@@ -1,6 +1,8 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-
+import { Link, Stack } from "expo-router";
+import { Pressable } from 'react-native'; // Add Pressable import
+import { FontAwesome } from '@expo/vector-icons'; // Add FontAwesome import
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -15,6 +17,7 @@ export default function TabLayout() {
         headerShown: false,
       }}
     >
+      
       <Tabs.Screen
         name="index"
         options={{
@@ -28,7 +31,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="explore"
         options={{
-          title: 'explore',
+          title: 'Explore',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
           ),
@@ -58,7 +61,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="HomeScreen"
         options={{
-          title: 'Home Screen',
+          title: 'HomeScreen',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'grid' : 'grid-outline'} color={color} />
           ),

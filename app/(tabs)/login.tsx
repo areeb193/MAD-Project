@@ -13,7 +13,7 @@ import { useRouter } from 'expo-router';
 import tailwind from 'twrnc';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
-import { supabase } from '@/lib/supabase';
+import { supabaseauth } from '@/lib/supabaseauth';
 
 export default function Login() {
   const router = useRouter();
@@ -60,7 +60,7 @@ export default function Login() {
 
     try {
       // Login with Supabase
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabaseauth.auth.signInWithPassword({
         email,
         password,
       });

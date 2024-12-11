@@ -6,7 +6,7 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = 'https://slbdztvvoyiwtrjwjqck.supabase.co'
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNsYmR6dHZ2b3lpd3RyandqcWNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMyOTg4NTcsImV4cCI6MjA0ODg3NDg1N30.zZ1KDOZzynyRIPizu5zlCkciyESCR2wPi-9AkhKr_6Q'
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+export const supabaseauth = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     storage: AsyncStorage,
     autoRefreshToken: true,
@@ -22,8 +22,8 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 // only be registered once.
 AppState.addEventListener('change', (state) => {
   if (state === 'active') {
-    supabase.auth.startAutoRefresh()
+    supabaseauth.auth.startAutoRefresh()
   } else {
-    supabase.auth.stopAutoRefresh()
+    supabaseauth.auth.stopAutoRefresh()
   }
 })
