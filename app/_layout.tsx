@@ -4,6 +4,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
+import { CartProvider } from './Provider/CartProvider';
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 
@@ -28,11 +29,15 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-     
+      <CartProvider>
         <Stack>
+          {/* Tabs screen */}
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          {/* Add CartScreen here as a Stack screen */}
+          {/* Not-found screen */}
           <Stack.Screen name="+not-found" />
         </Stack>
+      </CartProvider>
     </ThemeProvider>
   );
 }

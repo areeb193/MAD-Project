@@ -6,6 +6,7 @@ import { FontAwesome } from '@expo/vector-icons'; // Add FontAwesome import
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import CartScreen from './CartScreen';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -17,7 +18,6 @@ export default function TabLayout() {
         headerShown: false,
       }}
     >
-      
       <Tabs.Screen
         name="index"
         options={{
@@ -68,6 +68,20 @@ export default function TabLayout() {
           tabBarStyle: { display: 'none' },
         }}
       />
+
+      {/* Corrected to use `component` instead of `screen` */}
+      <Tabs.Screen
+        name="CartScreen"
+        
+        options={{
+          title: 'Cart',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'grid' : 'grid-outline'} color={color} />
+          ),
+          tabBarStyle: { display: 'none' },
+        }}
+      />
+       
     </Tabs>
   );
 }
