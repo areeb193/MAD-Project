@@ -41,7 +41,7 @@ const Index = () => {
       <Animated.View style={[tailwind`bg-white/20 rounded-full mb-12`, { padding: ring2padding }]}>
         <Animated.View style={[tailwind`bg-white/20 rounded-full`, { padding: ring1padding }]}>
           <Image
-            source={require('../../assets/images/react-logo.png')}
+            source={require('../../assets/images/logo.png')}
             style={{ width: hp(20), height: hp(20) }}
           />
         </Animated.View>

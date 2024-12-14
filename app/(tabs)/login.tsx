@@ -15,6 +15,9 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 import { supabaseauth } from '@/lib/supabaseauth';
 
+
+
+
 export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState('');
@@ -105,7 +108,7 @@ export default function Login() {
               Enter your valid email and password
             </Text>
             <Image
-              source={require('../../assets/images/react-logo.png')}
+              source={require('../../assets/images/logo.png')}
               style={{ width: hp(20), height: hp(20) }}
             />
           </Animated.View>
