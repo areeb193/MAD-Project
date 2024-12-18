@@ -53,6 +53,7 @@
     "react-native-vector-icons": "^10.2.0",
     "react-native-web": "~0.19.10",
     "react-navigation": "^5.0.0",
+    "sneaks-api": "^1.2.3",
     "twrnc": "^4.6.0"
   },
   "devDependencies": {

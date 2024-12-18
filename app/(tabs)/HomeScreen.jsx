@@ -5,10 +5,13 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 import { BellIcon, MagnifyingGlassIcon } from "react-native-heroicons/outline";
 import { Link } from "expo-router"; // Import Link for navigation
 import tailwind from "twrnc";
-import shoes from "../../data/data";
+
 import Card from "../../components/card"; // Import your Card component
 
 const { width } = Dimensions.get("window");
+const apiUrl = 'https://slbdztvvoyiwtrjwjqck.supabase.co/rest/v1/Semester?select=*';
+const anonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNsYmR6dHZ2b3lpd3RyandqcWNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMyOTg4NTcsImV4cCI6MjA0ODg3NDg1N30.zZ1KDOZzynyRIPizu5zlCkciyESCR2wPi-9AkhKr_6Q';
+
 
 const HomeScreen = () => {
   const images = [
@@ -16,9 +19,37 @@ const HomeScreen = () => {
     require("../../assets/images/sky.png"),
     require("../../assets/images/nature.png"),
   ];
+  const [semesterData, setSemesterData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollY = useRef(new Animated.Value(0)).current;
+  const fetchSemesterData = async () => {
+    try {
+      const response = await fetch(apiUrl, {
+        method: "GET",
+        headers: {
+          apikey: anonKey,
+          Authorization: `Bearer ${anonKey}`,
+        },
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        setSemesterData(data || []); // Set fetched data
+      } else {
+        console.error("Error fetching data:", data);
+      }
+    } catch (error) {
+      console.error("Unexpected error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSemesterData();
+  }, []);
 
   // Automatically slide images
   useEffect(() => {
@@ -132,13 +163,18 @@ const HomeScreen = () => {
 
       {/* Product List */}
       <Animated.FlatList
-        data={shoes}
+        data={semesterData}
         keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
         renderItem={({ item }) => (
           <Link href={`/${item.id}`} asChild>
             {/* Wrap Card with Link */}
             <Card
-              item={item}
+              item={{
+                title: item.Name,
+                pic : item.pic,
+                size: item.size || "N/A",
+                price: item.Price || "N/A",
+              }}
               onPress={() => {
                 console.log(`Navigating to details of: ${item.title}`);
               }}

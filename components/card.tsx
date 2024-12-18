@@ -55,7 +55,7 @@ const Card: React.FC<CardProps> = ({ item, onPress }) => {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "white",
-    borderRadius: 10,
+    borderRadius: 5,
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 3 },
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     padding: 15,
     marginBottom: 15,
-    width: 180,
+    width: 150,
     position: "relative", // Position the heart icon at the bottom right
   },
   image: {
