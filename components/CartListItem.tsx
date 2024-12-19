@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, Animated } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import { useCart } from '../app/Provider/CartProvider';
+import { useCart } from '../Provider/CartProvider';
 
 type CartListItemProps = {
   cartItem: { product: { id: string; image: string; name: string; price: number }; quantity: number; size: string };
@@ -21,11 +21,13 @@ const CartListItem = ({ cartItem }: CartListItemProps) => {
 
   return (
     <Animated.View style={[styles.container, { transform: [{ scale: scaleAnim }] }]}>
-      <Image source={{ uri: cartItem.product.image }} style={styles.image} resizeMode="contain" />
+      <Image source={{ uri: cartItem.product?.image }} style={styles.image} resizeMode="contain" />
       <View style={{ flex: 1 }}>
-        <Text style={styles.title}>{cartItem.product.name}</Text>
+        <Text style={styles.title}>{cartItem.product?.name || ' Product'}</Text>
         <View style={styles.subtitleContainer}>
-          <Text style={styles.price}>${cartItem.product.price.toFixed(2)}</Text>
+          <Text style={styles.price}>
+            ${cartItem.product?.price ? cartItem.product.price.toFixed(2) : '0.00'}
+          </Text>
           <Text>Size: {cartItem.size}</Text>
         </View>
       </View>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { useCart } from '../Provider/CartProvider';
+import { useCart } from '../../Provider/CartProvider';
 import Button from '../../components/Button';
 import CartListItem from '../../components/CartListItem';
 import Animated, { FadeIn } from 'react-native-reanimated';
@@ -29,7 +29,7 @@ const CartScreen = () => {
         keyExtractor={(item) => item.product.id.toString()}
         contentContainerStyle={styles.listContainer}
       />
-      <Text style={styles.total}>Total: ${total.toFixed(2)}</Text>
+      <Text style={styles.total}>Total: ${total ? total.toFixed(2) : '0.00'}</Text>
       <Button text="Checkout" onPress={() => { /* Add checkout functionality here */ }} />
       <StatusBar style="auto" />
     </Animated.View>

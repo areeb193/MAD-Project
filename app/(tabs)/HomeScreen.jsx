@@ -6,7 +6,9 @@ import { BellIcon, MagnifyingGlassIcon } from "react-native-heroicons/outline";
 import { Link } from "expo-router"; // Import Link for navigation
 import tailwind from "twrnc";
 
-import Card from "../../components/card"; // Import your Card component
+import Card from "../../components/card";
+import TrendingSection from'../../components/TrendingShoesSection' // Import your Card component
+import TrendingShoesSection from "../../components/TrendingShoesSection";
 
 const { width } = Dimensions.get("window");
 const apiUrl = 'https://slbdztvvoyiwtrjwjqck.supabase.co/rest/v1/Semester?select=*';
@@ -147,17 +149,8 @@ const HomeScreen = () => {
         </View>
 
         {/* Trending Shoes Section */}
-        <View style={tailwind`px-4 mb-6`}>
-          <Text style={[tailwind`font-semibold text-neutral-600`, { fontSize: hp(2.5) }]}>Trending Shoes</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={tailwind`mt-4`}>
-            <TouchableOpacity style={tailwind`bg-gray-200 p-4 rounded-lg mr-4 w-32 h-32 justify-center items-center`}>
-              <Text style={tailwind`text-gray-700 font-semibold text-center`}>Running</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={tailwind`bg-gray-200 p-4 rounded-lg mr-4 w-32 h-32 justify-center items-center`}>
-              <Text style={tailwind`text-gray-700 font-semibold text-center`}>Training</Text>
-            </TouchableOpacity>
-            {/* Add more cards as needed */}
-          </ScrollView>
+        <View style={tailwind`px-1 mb-1`}>
+          < TrendingSection />
         </View>
       </Animated.View>
 

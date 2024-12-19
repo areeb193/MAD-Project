@@ -1,45 +1,86 @@
-import React, { useState } from "react";
-import { View, Text, Image, Pressable, ScrollView } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, Image, Pressable, ScrollView, ActivityIndicator } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import tailwind from "twrnc";
-import products from "../../data/data";
 import { useRouter } from "expo-router";
-import { useCart } from "../Provider/CartProvider"; // Import the useCart hook
+import { useCart } from "../../Provider/CartProvider";
+
+const apiUrl = "https://slbdztvvoyiwtrjwjqck.supabase.co/rest/v1/Semester";
+const anonKey =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNsYmR6dHZ2b3lpd3RyandqcWNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMyOTg4NTcsImV4cCI6MjA0ODg3NDg1N30.zZ1KDOZzynyRIPizu5zlCkciyESCR2wPi-9AkhKr_6Q";
+
+interface Shoe {
+  id: string;
+  Title: string;
+  Price: number;
+  pic: string;
+}
 
 const DetailScreen = () => {
-  const { id } = useLocalSearchParams();
-  console.log(id); // Log to check if id is fetched correctly
-
-  // Find the product matching the id
-  const shoe = products.find((p) => p.id.toString() === id);
-  console.log(shoe); // Log the shoe object to see if it's found
-
-  const [selectedSize, setSelectedSize] = useState<string | null>(null); // Specify the type of selectedSize
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const [shoe, setShoe] = useState<Shoe | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const sizes = ["6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11"];
-  
-  const { addItem } = useCart(); // Get the addToCart function from context
-  const router = useRouter(); // Navigation hook to navigate to CartScreen
+  const { addItem } = useCart();
+  const router = useRouter();
 
-  if (!shoe) {
-    return <Text style={tailwind`text-center text-red-500`}>Shoe not found</Text>;
-  }
+  useEffect(() => {
+    const fetchShoeData = async () => {
+      try {
+        const response = await fetch(`${apiUrl}?id=eq.${id}`, {
+          method: "GET",
+          headers: {
+            apikey: anonKey,
+            Authorization: `Bearer ${anonKey}`,
+            "Content-Type": "application/json",
+          },
+        });
+        const data: Shoe[] = await response.json();
+        if (response.ok && data.length > 0) {
+          setShoe(data[0]);
+        } else {
+          console.error("Shoe not found or error fetching data.");
+        }
+      } catch (error) {
+        console.error("Unexpected error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchShoeData();
+  }, [id]);
 
   const handleAddToCart = () => {
     if (selectedSize) {
-      const product = {
-        id: shoe.id.toString(),
-        title: shoe.title,
-        price: shoe.price,
-        pic: shoe.pic,
-        image: shoe.pic, // Assuming shoe.pic is used for the image as well
-        name: shoe.title, // Assuming shoe.title is used for the name as well
-      };
-      addItem(product, selectedSize); // Pass both product and size
-      router.push("/CartScreen"); // Use navigate instead of push
+      addItem(
+        {
+          id: shoe!.id,
+          
+          price: shoe!.Price,
+          image: shoe!.pic,
+          name: shoe!.Title,
+        },
+        selectedSize
+      );
+      router.push("/CartScreen");
     } else {
       alert("Please select a size");
     }
   };
+
+  if (loading) {
+    return (
+      <View style={tailwind`flex-1 justify-center items-center`}>
+        <ActivityIndicator size="large" color="#000" />
+      </View>
+    );
+  }
+
+  if (!shoe) {
+    return <Text style={tailwind`text-center text-red-500`}>Shoe not found</Text>;
+  }
 
   return (
     <ScrollView style={tailwind`flex-1 bg-white`}>
@@ -54,16 +95,15 @@ const DetailScreen = () => {
 
       {/* Title and Price */}
       <View style={tailwind`px-6`}>
-        <Text style={tailwind`text-3xl font-bold mb-2`}>{shoe.title}</Text>
+        <Text style={tailwind`text-3xl font-bold mb-2`}>{shoe.Title}</Text>
         <Text style={tailwind`text-gray-600 text-lg`}>Men's Shoes</Text>
-        <Text style={tailwind`text-black text-2xl font-bold mt-1`}>${shoe.price}</Text>
+        <Text style={tailwind`text-black text-2xl font-bold mt-1`}>${shoe.Price}</Text>
       </View>
 
       {/* Description */}
       <View style={tailwind`px-6 mt-4`}>
         <Text style={tailwind`text-gray-500`}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quis non, eu odio enim.
-          Placera dolor sit ex enim. Nam elementum felis aliquet felis ipsum ex amet.
+          High-quality shoes that combine comfort and durability, perfect for any occasion.
         </Text>
       </View>
 
@@ -74,11 +114,11 @@ const DetailScreen = () => {
           {sizes.map((size) => (
             <Pressable
               key={size}
-              onPress={() => setSelectedSize(size)} // Correctly update selectedSize
+              onPress={() => setSelectedSize(size)}
               style={[
                 tailwind`p-2 m-1 border rounded-lg`,
                 selectedSize === size
-                  ? tailwind`border-black bg-gray-200` // Highlight selected size
+                  ? tailwind`border-black bg-gray-200`
                   : tailwind`border-gray-300`,
               ]}
             >
@@ -93,7 +133,10 @@ const DetailScreen = () => {
         <Pressable style={tailwind`flex-1 bg-black py-3 mr-2 rounded-lg`}>
           <Text style={tailwind`text-white text-center font-bold`}>BUY NOW</Text>
         </Pressable>
-        <Pressable style={tailwind`flex-1 bg-gray-700 py-3 ml-2 rounded-lg`} onPress={handleAddToCart}>
+        <Pressable
+          style={tailwind`flex-1 bg-gray-700 py-3 ml-2 rounded-lg`}
+          onPress={handleAddToCart}
+        >
           <Text style={tailwind`text-white text-center font-bold`}>ADD TO CART</Text>
         </Pressable>
       </View>

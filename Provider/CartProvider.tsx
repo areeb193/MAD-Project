@@ -68,7 +68,10 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     setItems((prevItems) => prevItems.filter((item) => item.product.id !== productId));
   };
 
-  const total = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  const total = items.reduce((sum, item) => {
+    const price = item.product?.price || 0; // Default to 0 if price is missing
+    return sum + price * item.quantity;
+  }, 0);
 
   return (
     <CartContext.Provider value={{ items, total, addItem, updateQuantity, removeItem }}>
