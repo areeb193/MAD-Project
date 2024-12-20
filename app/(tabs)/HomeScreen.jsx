@@ -5,6 +5,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 import { BellIcon, MagnifyingGlassIcon } from "react-native-heroicons/outline";
 import { Link } from "expo-router"; // Import Link for navigation
 import tailwind from "twrnc";
+import { useRouter } from "expo-router";
 
 import Card from "../../components/card";
 import TrendingSection from'../../components/TrendingShoesSection' // Import your Card component
@@ -26,6 +27,7 @@ const HomeScreen = () => {
 
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollY = useRef(new Animated.Value(0)).current;
+  const router = useRouter();
   const fetchSemesterData = async () => {
     try {
       const response = await fetch(apiUrl, {
@@ -94,20 +96,25 @@ const HomeScreen = () => {
 
         {/* Search Bar */}
         <View style={tailwind`px-4 mb-4`}>
-          <View style={tailwind`flex-row items-center rounded-full bg-black/5 p-[6px]`}>
-            <TextInput
-              placeholder="Search for shoes"
-              placeholderTextColor="gray"
-              style={[
-                tailwind`flex-1 text-base tracking-wider pl-3`,
-                { fontSize: hp(1.7) },
-              ]}
-            />
-            <View style={tailwind`bg-white rounded-full p-3`}>
-              <MagnifyingGlassIcon size={hp(2.5)} strokeWidth={3} color="gray" />
-            </View>
-          </View>
-        </View>
+  <TouchableOpacity
+    onPress={() => {
+      // Navigate to the Search Screen
+      router.push("/Search");
+    }}
+    style={tailwind`flex-row items-center rounded-full bg-black/5 p-[6px]`}
+  >
+    <TextInput
+      placeholder="Search for shoes"
+      placeholderTextColor="gray"
+      editable={false} // Prevent editing here
+      style={[tailwind`flex-1 text-base tracking-wider pl-3`, { fontSize: hp(1.7) }]}
+    />
+    <View style={tailwind`bg-white rounded-full p-3`}>
+      <MagnifyingGlassIcon size={hp(2.5)} strokeWidth={3} color="gray" />
+    </View>
+  </TouchableOpacity>
+</View>
+
 
         {/* Image Slider */}
         <View style={{ height: 150, marginBottom: 16 }}>
@@ -154,6 +161,8 @@ const HomeScreen = () => {
         </View>
       </Animated.View>
 
+      
+
       {/* Product List */}
       <Animated.FlatList
         data={semesterData}
@@ -161,9 +170,10 @@ const HomeScreen = () => {
         renderItem={({ item }) => (
           <Link href={`/${item.id}`} asChild>
             {/* Wrap Card with Link */}
+            
             <Card
               item={{
-                title: item.Name,
+                title: item.Title,
                 pic : item.pic,
                 size: item.size || "N/A",
                 price: item.Price || "N/A",

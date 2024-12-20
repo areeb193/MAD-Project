@@ -68,6 +68,16 @@ export default function TabLayout() {
           tabBarStyle: { display: 'none' },
         }}
       />
+      <Tabs.Screen
+        name="Search"
+        options={{
+          title: 'Search',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'grid' : 'grid-outline'} color={color} />
+          ),
+          tabBarStyle: { display: 'none' },
+        }}
+      />
 
       {/* Corrected to use `component` instead of `screen` */}
       <Tabs.Screen
