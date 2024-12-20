@@ -8,14 +8,15 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import { Link } from "expo-router";
+import { useRouter } from "expo-router"; // Import useRouter for navigation
 import { createClient } from "@supabase/supabase-js";
+import { Link } from "expo-router";
 import Animated, {
   FadeIn,
   FadeOut,
   SlideInRight,
 } from "react-native-reanimated";
-
+import { ArrowLeftIcon } from 'react-native-heroicons/solid';
 
 // Initialize Supabase client
 const supabaseUrl = "https://slbdztvvoyiwtrjwjqck.supabase.co";
@@ -34,6 +35,7 @@ const Search = () => {
   const [searchText, setSearchText] = useState<string>("");
   const [filteredProducts, setFilteredProducts] = useState<ProductType[]>([]);
   const [allProducts, setAllProducts] = useState<ProductType[]>([]);
+  const router = useRouter(); // Initialize the router for navigation
 
   // Fetch products from Supabase
   useEffect(() => {
@@ -63,21 +65,29 @@ const Search = () => {
 
   const handleSearch = (text: string) => {
     setSearchText(text);
-  
+
     if (text === "") {
       setFilteredProducts([]); // Clear the filtered product list if the search field is empty
       return;
     }
-  
+
     const filtered = allProducts.filter((product) =>
       product.Title?.toLowerCase().includes(text.toLowerCase())
     );
     setFilteredProducts(filtered);
   };
-  
 
   return (
     <View style={styles.container}>
+      {/* Back Button */}
+      <TouchableOpacity
+        onPress={() => router.push('/HomeScreen')} // Navigation on back button click
+        style={styles.backButton}
+        accessibilityLabel="Back to home screen"
+      >
+        <ArrowLeftIcon size={20} color="black" />
+      </TouchableOpacity>
+
       {/* Search Bar */}
       <TextInput
         value={searchText}
@@ -85,53 +95,42 @@ const Search = () => {
         placeholder="Search for products..."
         placeholderTextColor="#888"
         style={styles.searchBar}
-        
-        
       />
-      
 
       {/* Initial Message */}
       {searchText === "" && (
-        <Animated.Text
-          entering={FadeIn}
-          style={styles.initialMessage}
-        >
+        <Animated.Text entering={FadeIn} style={styles.initialMessage}>
           Search for a product
         </Animated.Text>
       )}
 
       {/* Filtered Products */}
-      
       <FlatList
-  data={filteredProducts}
-  keyExtractor={(item) => item.id.toString()}
-  renderItem={({ item }) => (
-    <Animated.View entering={SlideInRight} exiting={FadeOut}>
-      <TouchableOpacity>
-        <Link href={`/${item.id}`}>
-          <View style={styles.productCard}>
-            <Image
-              source={{ uri: item.pic }}
-              style={styles.productImage}
-            />
-            <View>
-              <Text style={styles.productTitle}>{item.Title}</Text>
-              <Text style={styles.productPrice}>${item.Price}</Text>
-            </View>
-          </View>
-        </Link>
-      </TouchableOpacity>
-    </Animated.View>
-  )}
-  ListEmptyComponent={
-    searchText !== "" ? (
-      <Animated.Text entering={FadeIn} style={styles.emptyMessage}>
-        No products found.
-      </Animated.Text>
-    ) : null // Use null instead of false
-  }
-/>
-
+        data={filteredProducts}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <Animated.View entering={SlideInRight} exiting={FadeOut}>
+            <TouchableOpacity>
+              <Link href={`/${item.id}`}>
+                <View style={styles.productCard}>
+                  <Image source={{ uri: item.pic }} style={styles.productImage} />
+                  <View>
+                    <Text style={styles.productTitle}>{item.Title}</Text>
+                    <Text style={styles.productPrice}>${item.Price}</Text>
+                  </View>
+                </View>
+              </Link>
+            </TouchableOpacity>
+          </Animated.View>
+        )}
+        ListEmptyComponent={
+          searchText !== "" ? (
+            <Animated.Text entering={FadeIn} style={styles.emptyMessage}>
+              No products found.
+            </Animated.Text>
+          ) : null // Use null instead of false
+        }
+      />
     </View>
   );
 };
@@ -141,6 +140,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f9f9f9",
     padding: 16,
+  },
+  backButton: {
+    marginBottom: 16,
   },
   searchBar: {
     borderWidth: 1,
