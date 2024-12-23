@@ -8,6 +8,7 @@ import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import CartScreen from './CartScreen';
 
+
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
@@ -16,6 +17,7 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
+        tabBarStyle: { display: 'none' },
       }}
     >
       <Tabs.Screen
@@ -68,6 +70,7 @@ export default function TabLayout() {
           tabBarStyle: { display: 'none' },
         }}
       />
+      
       <Tabs.Screen
         name="Search"
         options={{
@@ -91,6 +94,21 @@ export default function TabLayout() {
           tabBarStyle: { display: 'none' },
         }}
       />
+      <Tabs.Screen
+        name="Checkout"
+            options={{
+              title: 'Checkout',
+               tabBarIcon: ({ color, focused }) => (
+                <TabBarIcon name={focused ? 'grid' : 'grid-outline'} color={color} />
+                    ),
+                 tabBarStyle: { display: 'none' },
+                       }}
+                      />
+
+      
+      
+
+      
        
     </Tabs>
   );

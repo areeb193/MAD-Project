@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tailwind from 'twrnc';
-import LottieView from 'lottie-react-native';
+
 
 import { useRouter } from 'expo-router'; // Using expo-router's useRouter for navigation
 
@@ -18,14 +18,7 @@ const Explore = () => {
           Let's Get Started
         </Text>
 
-        {/* Lottie animation for a playful touch */}
-        {/* <LottieView
-          source={require('../../assets/images/rocket.json')} // Adjust the path if needed
-          autoPlay
-          loop
-          style={tailwind`w-96 h-96 mb-8`} // Adjusted size to be more visually fitting
-        /> */}
-        
+       
         {/* Sign up button */}
         <TouchableOpacity
           onPress={() => router.push('/signup')} // Correct usage of router.push() to navigate

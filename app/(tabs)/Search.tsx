@@ -13,6 +13,7 @@ import { createClient } from "@supabase/supabase-js";
 import { Link } from "expo-router";
 import Animated, {
   FadeIn,
+  FadeInDown,
   FadeOut,
   SlideInRight,
 } from "react-native-reanimated";
@@ -108,8 +109,8 @@ const Search = () => {
       <FlatList
         data={filteredProducts}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <Animated.View entering={SlideInRight} exiting={FadeOut}>
+        renderItem={({ item, index }) => (
+          <Animated.View entering={FadeInDown.delay(300 + index * 100).duration(500)} exiting={FadeOut}>
             <TouchableOpacity>
               <Link href={`/${item.id}`}>
                 <View style={styles.productCard}>
