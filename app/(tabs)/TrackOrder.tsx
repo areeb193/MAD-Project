@@ -87,14 +87,14 @@ const TrackOrder = () => {
             return (
               <View style={styles.orderCard}>
                 {products.map((product) => (
-                  <View key={product.id} style={styles.productContainer}>
+                  <View key={`${item.id}-${product.id}`} style={styles.productContainer}>
                     <Image source={{ uri: 'https://via.placeholder.com/60' }} style={styles.productImage} />
                     <View style={styles.orderDetails}>
                       <Text style={styles.productName}>{product.name}</Text>
                       <Text style={styles.productQuantity}>Quantity: {product.quantity}</Text>
                       <Text style={styles.productSize}>Size: {product.size}</Text>
                       <Text style={styles.orderStatus}>
-                        Status: {item.OrderStatus ? 'Pending' : 'Delivered'}
+                        Status: {item.OrderStatus ? 'Delivered' : 'Pending'}
                       </Text>
                     </View>
                   </View>
