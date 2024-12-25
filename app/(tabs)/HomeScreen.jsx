@@ -83,7 +83,11 @@ const HomeScreen = () => {
               source={require("../../assets/images/react-logo.png")}
               style={{ height: hp(5), width: hp(5.5) }}
             />
+             
+          <TouchableOpacity onPress={() => router.push('/TrackOrder')}>
             <MapPinIcon size={hp(4)} color="gray" />
+          </TouchableOpacity>
+        
           </View>
 
           <Text style={[tailwind`text-neutral-600`, { fontSize: hp(1.7) }]}>Hello!</Text>

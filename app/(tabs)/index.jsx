@@ -50,7 +50,7 @@ const Index = () => {
       {/* Text container with spacing */}
       <View style={tailwind`items-center mt-8`}>
         <Text style={[tailwind`font-bold text-white mb-4`, { fontSize: hp(7) }]}>
-          Shoes
+        StrideZone
         </Text>
         <Text style={[tailwind`text-white`, { fontSize: hp(2) }]}>
           Right for You

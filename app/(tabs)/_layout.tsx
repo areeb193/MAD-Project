@@ -105,7 +105,17 @@ export default function TabLayout() {
                        }}
                       />
 
-      
+<Tabs.Screen
+        name="TrackOrder"
+        
+        options={{
+          title: 'TrackOrder',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'grid' : 'grid-outline'} color={color} />
+          ),
+          tabBarStyle: { display: 'none' },
+        }}
+      />
       
 
       
