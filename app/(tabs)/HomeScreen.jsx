@@ -8,12 +8,11 @@ import tailwind from "twrnc";
 import { useRouter } from "expo-router";
 
 import Card from "../../components/card";
-import TrendingSection from "../../components/TrendingShoesSection"; // Import your TrendingSection component
+import TrendingSection from '../../components/TrendingShoesSection'; // Import your Card component
 
 const { width } = Dimensions.get("window");
-const apiUrl = "https://slbdztvvoyiwtrjwjqck.supabase.co/rest/v1/Semester?select=*";
-const anonKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNsYmR6dHZ2b3lpd3RyandqcWNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMyOTg4NTcsImV4cCI6MjA0ODg3NDg1N30.zZ1KDOZzynyRIPizu5zlCkciyESCR2wPi-9AkhKr_6Q";
+const apiUrl = 'https://slbdztvvoyiwtrjwjqck.supabase.co/rest/v1/Semester?select=*';
+const anonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNsYmR6dHZ2b3lpd3RyandqcWNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMyOTg4NTcsImV4cCI6MjA0ODg3NDg1N30.zZ1KDOZzynyRIPizu5zlCkciyESCR2wPi-9AkhKr_6Q';
 
 const HomeScreen = () => {
   const images = [
@@ -74,23 +73,21 @@ const HomeScreen = () => {
     <View style={tailwind`flex-1 bg-white`}>
       <StatusBar hidden={true} />
 
-      {/* Header Section */}
       <Animated.View
-        style={[
-          tailwind`absolute top-0 left-0 right-0 z-10 bg-white`,
-          { transform: [{ translateY: headerTranslate }] },
-        ]}
+        style={[tailwind`absolute top-0 left-0 right-0 z-10 bg-white`, { transform: [{ translateY: headerTranslate }] }]}
       >
-        {/* Header Content */}
+        {/* Header and Welcome Text */}
         <View style={tailwind`px-4 mb-4`}>
           <View style={tailwind`flex-row justify-between items-center mb-4`}>
             <Image
               source={require("../../assets/images/react-logo.png")}
               style={{ height: hp(5), width: hp(5.5) }}
             />
-            <TouchableOpacity onPress={() => router.push("/TrackOrder")}>
-              <MapPinIcon size={hp(4)} color="gray" />
-            </TouchableOpacity>
+             
+          <TouchableOpacity onPress={() => router.push('/TrackOrder')}>
+            <MapPinIcon size={hp(4)} color="gray" />
+          </TouchableOpacity>
+        
           </View>
 
           <Text style={[tailwind`text-neutral-600`, { fontSize: hp(1.7) }]}>Hello!</Text>
@@ -103,6 +100,7 @@ const HomeScreen = () => {
         <View style={tailwind`px-4 mb-4`}>
           <TouchableOpacity
             onPress={() => {
+              // Navigate to the Search Screen
               router.push("/Search");
             }}
             style={tailwind`flex-row items-center rounded-full bg-black/5 p-[6px]`}
@@ -118,13 +116,7 @@ const HomeScreen = () => {
             </View>
           </TouchableOpacity>
         </View>
-      </Animated.View>
 
-      <Animated.ScrollView
-        contentContainerStyle={{ paddingTop: 250, paddingHorizontal: 10 }} // Adjust top padding to align with the header
-        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true })}
-        scrollEventThrottle={16}
-      >
         {/* Image Slider */}
         <View style={{ height: 150, marginBottom: 16 }}>
           <ScrollView
@@ -150,7 +142,7 @@ const HomeScreen = () => {
           </ScrollView>
           <View style={tailwind`flex-row justify-center mt-2`}>
             {images.map((_, index) => (
-              <View
+              <TouchableOpacity
                 key={index}
                 style={{
                   width: 8,
@@ -164,39 +156,47 @@ const HomeScreen = () => {
           </View>
         </View>
 
-        {/* Trending Section */}
-        <View style={tailwind`px-2 mb-4`}>
+        {/* Trending Shoes Section */}
+        <View style={tailwind`px-1 mb-1`}>
           <TrendingSection />
         </View>
+      </Animated.View>
 
-        {/* Product List */}
-        <FlatList
-          data={semesterData}
-          keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
-          renderItem={({ item }) => (
-            <Link href={`/${item.id}`} asChild>
-              <Card
-                item={{
-                  title: item.Title,
-                  pic: item.pic,
-                  size: item.size || "N/A",
-                  price: item.Price || "N/A",
-                }}
-              />
-            </Link>
-          )}
-          numColumns={2}
-          contentContainerStyle={tailwind`gap-y-4`}
-          columnWrapperStyle={tailwind`gap-x-4`}
-          ListEmptyComponent={
-            <View style={tailwind`flex-1 justify-center items-center`}>
-              <Text style={tailwind`text-gray-500`}>No products available.</Text>
-            </View>
-          }
-        />
-      </Animated.ScrollView>
+      {/* Product List */}
+      <Animated.FlatList
+        data={semesterData}
+        keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
+        renderItem={({ item }) => (
+          <Link href={`/${item.id}`} asChild>
+            {/* Wrap Card with Link */}
+            <Card
+              item={{
+                title: item.Title,
+                pic: item.pic,
+                size: item.size || "N/A",
+                price: item.Price || "N/A",
+              }}
+              onPress={() => {
+                console.log(`Navigating to details of: ${item.title}`);
+              }}
+            />
+          </Link>
+        )}
+        numColumns={2}
+        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40, paddingTop: 650 }}
+        columnWrapperStyle={{ gap: 10, justifyContent: "space-between" }} // Ensure proper spacing
+        ListEmptyComponent={
+          <View style={tailwind`flex-1 justify-center items-center`}>
+            <Text style={tailwind`text-gray-500`}>No shoes available.</Text>
+          </View>
+        }
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: true }
+        )}
+      />
     </View>
   );
 };
 
-export default HomeScreen;
+export default HomeScreen; 
